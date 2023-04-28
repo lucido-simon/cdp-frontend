@@ -29,6 +29,10 @@ class APIService {
     const response: AxiosResponse<OrderDTO> = await this.api.get(`/api/v1/orders/${id}`);
     return response.data;
   }
+
+  async createOrder(): Promise<void> {
+    await this.api.post('/api/v1/order');
+  }
 }
 
 export const apiService = new APIService();
