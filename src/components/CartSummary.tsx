@@ -25,22 +25,31 @@ const CartSummary: React.FC = () => {
       </button>
       {isOpen && (
         <div className="absolute right-0 mt-2 w-64 bg-white shadow-md rounded border p-4">
-          {items.map((item: ProductAggregateDTO & { quantity: number }) => (
-            <div key={item.id} className="flex justify-between items-center mb-2">
-              <span>
-                {item.name} x{item.quantity}
-              </span>
-              <button className="text-red-500" onClick={() => removeFromCart(item.id)}>
-                Remove
+          {items.length > 0 && (
+            <span>
+              {items.map((item: ProductAggregateDTO & { quantity: number }) => (
+                <div key={item.id} className="flex justify-between items-center mb-2">
+                  <span>
+                    {item.name} x{item.quantity}
+                  </span>
+                  <button className="text-red-500" onClick={() => removeFromCart(item.id)}>
+                    Remove
+                  </button>
+                </div>
+              ))}
+              <h1>
+                Total: $
+                {items.reduce((total, item) => total + item.price * item.quantity, 0).toFixed(2)}
+              </h1>
+              <button
+                className="bg-blue-500 text-white px-4 py-2 rounded mt-4 w-full"
+                onClick={handleOrder}
+              >
+                Order
               </button>
-            </div>
-          ))}
-          <button
-            className="bg-blue-500 text-white px-4 py-2 rounded mt-4 w-full"
-            onClick={handleOrder}
-          >
-            Order
-          </button>
+            </span>
+          )}
+          {items.length === 0 && <p className="text-gray-600">No items in cart.</p>}
         </div>
       )}
     </div>
