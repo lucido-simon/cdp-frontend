@@ -1,13 +1,12 @@
-import React, { useState } from 'react';
-import { useCart } from '../context/CartContext';
-import { ProductAggregateDTO } from '../models/productAggregateDTO';
 import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { apiService } from '../services/APIService';
+import React, { useState } from 'react';
 import { toast } from 'react-toastify';
+import { useCart } from '../context/CartContext';
+import { ProductAggregateDTO } from '../models/productAggregateDTO';
 
 const CartSummary: React.FC = () => {
-  const { items, removeFromCart } = useCart();
+  const { items, removeFromCart, order } = useCart();
   const [isOpen, setIsOpen] = useState(false);
 
   const totalItems = items.reduce((total, item) => total + item.quantity, 0);
@@ -18,7 +17,7 @@ const CartSummary: React.FC = () => {
 
   const handleOrder = async () => {
     try {
-      await apiService.createOrder();
+      await order();
       toast.success('Order placed');
     } catch (error) {
       toast.error('Error placing order');
