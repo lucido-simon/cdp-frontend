@@ -35,6 +35,13 @@ class APIService {
     return response.data;
   }
 
+  async getCart(): Promise<ProductAggregateDTO[]> {
+    const response: AxiosResponse<{ products: ProductAggregateDTO[] }> = await this.api.get(
+      '/api/v1/cart',
+    );
+    return response.data.products;
+  }
+
   async createOrder(): Promise<String> {
     const response = await this.api.post('/api/v1/order');
     return response.data;

@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import { ProductAggregateDTO } from '../models/productAggregateDTO';
 import { apiService } from '../services/APIService';
 import { toast } from 'react-toastify';
@@ -15,6 +15,23 @@ const CartContext = createContext<CartContextData>({} as CartContextData);
 
 export const CartProvider = (props: React.PropsWithChildren<{}>) => {
   const [items, setItems] = useState<ProductAggregateDTO[]>([]);
+
+  useEffect(() => {
+    (async () => {
+      const [products, cartsProducts] = await Promise.all([
+        apiService.getProducts(),
+        apiService.getCart(),
+      ]).catch(() => {
+        toast.error('Error loading cart');
+        return [[], []];
+      });
+      const cart = products.flatMap((product) => {
+        const cartProduct = cartsProducts.find((cartProduct) => cartProduct.id === product.id);
+        return cartProduct ? [{ ...product, quantity: cartProduct.quantity }] : [];
+      });
+      setItems(cart);
+    })();
+  }, []);
 
   const addToCart = async (product: ProductAggregateDTO) => {
     try {
