@@ -1,5 +1,5 @@
-import { StockDTO } from './stockDTO';
 import { OrderStatus } from './orderStatus';
+import { ProductAggregateDTO } from './productAggregateDTO';
 
 export interface OrderDTO {
   id: string;
@@ -7,5 +7,5 @@ export interface OrderDTO {
   paymentId: string;
   shipmentId: string;
   orderStatus: OrderStatus;
-  orderProducts: StockDTO[];
+  orderProducts: ProductAggregateDTO[];
 }

@@ -8,8 +8,11 @@ class APIService {
     baseURL: apiConfig.baseURL,
   });
 
+  private products: ProductAggregateDTO[] = [];
+
   async getProducts(): Promise<ProductAggregateDTO[]> {
     const response: AxiosResponse<ProductAggregateDTO[]> = await this.api.get('/api/v1/products');
+    this.products = response.data;
     return response.data;
   }
 
@@ -22,7 +25,16 @@ class APIService {
 
   async getOrders(): Promise<OrderDTO[]> {
     const response: AxiosResponse<OrderDTO[]> = await this.api.get('/api/v1/orders');
-    return response.data;
+    const orders = response.data;
+    return orders.flatMap((order) => {
+      const products = order.orderProducts.flatMap((orderProduct) => {
+        const aggregate = this.products.find((cartProduct) => cartProduct.id === orderProduct.id);
+        return aggregate
+          ? [{ ...aggregate, price: orderProduct.price, quantity: orderProduct.quantity }]
+          : [];
+      });
+      return { ...order, orderProducts: products };
+    });
   }
 
   async getOrder(id: string): Promise<OrderDTO> {
