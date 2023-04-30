@@ -3,6 +3,7 @@ import { ToastContainer } from 'react-toastify';
 import Navbar from './components/Navbar';
 import ProductList from './components/ProductList';
 import { CartProvider } from './context/CartContext';
+import OrderList from './components/OrderList';
 
 const App: React.FC = () => {
   return (
@@ -11,6 +12,7 @@ const App: React.FC = () => {
         <Navbar />
         <Routes>
           <Route path="/" element={<ProductList />}></Route>
+          <Route path="/orders" element={<OrderList />}></Route>
         </Routes>
       </BrowserRouter>
       <ToastContainer />

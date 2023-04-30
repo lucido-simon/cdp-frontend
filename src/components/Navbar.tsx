@@ -11,6 +11,9 @@ const Navbar: React.FC = () => {
           Polystore
         </Link>
         <div className="flex items-center">
+          <Link to="/orders" className="text-white px-4 py-2 rounded hover:bg-blue-600">
+            Orders
+          </Link>
           <CartSummary />
         </div>
       </div>
