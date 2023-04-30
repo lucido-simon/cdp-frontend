@@ -30,8 +30,14 @@ class APIService {
     return response.data;
   }
 
-  async createOrder(): Promise<void> {
-    await this.api.post('/api/v1/order');
+  async addToCart(product: ProductAggregateDTO) {
+    const response = await this.api.post('/api/v1/cart', product);
+    return response.data;
+  }
+
+  async createOrder(): Promise<String> {
+    const response = await this.api.post('/api/v1/order');
+    return response.data;
   }
 }
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ProductAggregateDTO } from '../models/productAggregateDTO';
 import { useCart } from '../context/CartContext';
 
@@ -13,6 +13,10 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const handleQuantityChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setQuantity(parseInt(event.target.value));
   };
+
+  useEffect(() => {
+    product.quantity = quantity;
+  }, [quantity, product]);
 
   return (
     <div className="w-1/2 p-2">
@@ -37,7 +41,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           </select>
           <button
             className="bg-blue-500 text-white px-4 py-2 rounded ml-4"
-            onClick={() => addToCart(product, quantity)}
+            onClick={() => addToCart(product)}
           >
             Add to Cart
           </button>

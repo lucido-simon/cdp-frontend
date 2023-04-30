@@ -1,10 +1,11 @@
 import React, { createContext, useContext, useState } from 'react';
 import { ProductAggregateDTO } from '../models/productAggregateDTO';
 import { apiService } from '../services/APIService';
+import { toast } from 'react-toastify';
 
 interface CartContextData {
   items: ProductAggregateDTO[];
-  addToCart: (product: ProductAggregateDTO, quantity?: number) => void;
+  addToCart: (product: ProductAggregateDTO) => void;
   removeFromCart: (productId: string) => void;
   updateQuantity: (productId: string, quantity: number) => void;
   order: () => void;
@@ -15,19 +16,34 @@ const CartContext = createContext<CartContextData>({} as CartContextData);
 export const CartProvider = (props: React.PropsWithChildren<{}>) => {
   const [items, setItems] = useState<ProductAggregateDTO[]>([]);
 
-  const addToCart = (product: ProductAggregateDTO, quantity: number = 1) => {
-    const itemIndex = items.findIndex((item) => item.id === product.id);
-    if (itemIndex > -1) {
-      const newItems = [...items];
-      newItems[itemIndex].quantity += quantity;
-      setItems(newItems);
-    } else {
-      setItems([...items, { ...product, quantity }]);
+  const addToCart = async (product: ProductAggregateDTO) => {
+    try {
+      await apiService.addToCart(product);
+      const itemIndex = items.findIndex((item) => item.id === product.id);
+      if (itemIndex > -1) {
+        const newItems = [...items];
+        newItems[itemIndex].quantity += product.quantity;
+        setItems(newItems);
+      } else {
+        setItems([...items, { ...product }]);
+      }
+      toast.success('Product added to cart');
+    } catch (error) {
+      toast.error('Error adding product to cart');
     }
   };
 
-  const removeFromCart = (productId: string) => {
-    setItems(items.filter((item) => item.id !== productId));
+  const removeFromCart = async (productId: string) => {
+    const item = items.find((item) => item.id === productId);
+    if (item) {
+      try {
+        await apiService.addToCart({ ...item, quantity: -item.quantity });
+        setItems(items.filter((item) => item.id !== productId));
+        toast.success('Product removed from cart');
+      } catch (error) {
+        toast.error('Error removing product from cart');
+      }
+    }
   };
 
   const updateQuantity = (productId: string, quantity: number) => {
