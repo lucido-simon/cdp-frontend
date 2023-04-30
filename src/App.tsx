@@ -1,17 +1,17 @@
 import React from 'react';
-import './App.css';
+import { CartProvider } from './context/CartContext';
+import ProductList from './components/ProductList';
+import Navbar from './components/Navbar';
 
-import { apiService } from './services/APIService';
-
-function App() {
-  apiService.getProducts().then(console.log);
-  apiService.getOrders().then(console.log);
-
+const App: React.FC = () => {
   return (
-    <div>
-      <h1>Polystore</h1>
-    </div>
+    <CartProvider>
+      <div className="container mx-auto px-4 py-8">
+        <Navbar></Navbar>
+        <ProductList />
+      </div>
+    </CartProvider>
   );
-}
+};
 
 export default App;
