@@ -44,7 +44,6 @@ export const CartProvider = (props: React.PropsWithChildren<{}>) => {
       } else {
         setItems([...items, { ...product }]);
       }
-      toast.success('Product added to cart');
     } catch (error) {
       toast.error('Error adding product to cart');
     }
@@ -56,7 +55,6 @@ export const CartProvider = (props: React.PropsWithChildren<{}>) => {
       try {
         await apiService.addToCart({ ...item, quantity: -item.quantity });
         setItems(items.filter((item) => item.id !== productId));
-        toast.success('Product removed from cart');
       } catch (error) {
         toast.error('Error removing product from cart');
       }
