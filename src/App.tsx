@@ -1,17 +1,20 @@
-import React from 'react';
-import { CartProvider } from './context/CartContext';
-import ProductList from './components/ProductList';
-import Navbar from './components/Navbar';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
+import Navbar from './components/Navbar';
+import ProductList from './components/ProductList';
+import { CartProvider } from './context/CartContext';
 
 const App: React.FC = () => {
   return (
     <CartProvider>
-      <div className="container mx-auto px-4 py-8">
-        <Navbar></Navbar>
-        <ProductList />
-        <ToastContainer />
-      </div>
+      <BrowserRouter>
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<ProductList />}></Route>
+        </Routes>
+      </BrowserRouter>
+      <ToastContainer />
+      <div className="container mx-auto"></div>
     </CartProvider>
   );
 };
