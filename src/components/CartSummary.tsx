@@ -3,6 +3,8 @@ import { useCart } from '../context/CartContext';
 import { ProductAggregateDTO } from '../models/productAggregateDTO';
 import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { apiService } from '../services/APIService';
+import { toast } from 'react-toastify';
 
 const CartSummary: React.FC = () => {
   const { items, removeFromCart } = useCart();
@@ -14,8 +16,13 @@ const CartSummary: React.FC = () => {
     setIsOpen(!isOpen);
   };
 
-  const handleOrder = () => {
-    // Handle order creation here
+  const handleOrder = async () => {
+    try {
+      await apiService.createOrder();
+      toast.success('Order placed');
+    } catch (error) {
+      toast.error('Error placing order');
+    }
   };
 
   return (
