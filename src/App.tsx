@@ -2,6 +2,7 @@ import React from 'react';
 import { CartProvider } from './context/CartContext';
 import ProductList from './components/ProductList';
 import Navbar from './components/Navbar';
+import { ToastContainer } from 'react-toastify';
 
 const App: React.FC = () => {
   return (
@@ -9,6 +10,7 @@ const App: React.FC = () => {
       <div className="container mx-auto px-4 py-8">
         <Navbar></Navbar>
         <ProductList />
+        <ToastContainer />
       </div>
     </CartProvider>
   );
